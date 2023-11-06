@@ -20,5 +20,10 @@ app.get('/', (req, res) => {
 app.use('/api', userRouter);
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  try {
+    console.log(`Server is running on port ${port}`);
+}
+catch (err) {
+    console.log("error", err);
+}
 });

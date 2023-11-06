@@ -1,23 +1,21 @@
-const jwt = require('jsonwebtoken')
-const secret_key = "bhanu"
-const auth =(req,res,next)=>{
-    const BearerToken = req.headers["authorization"]
-    if(BearerToken){
-        const token = BearerToken.split(" ")
+const jwt = require('jsonwebtoken');
+const { secret_key } = require("./controller");
 
-
-        const validate = jwt.verify(token,secret_key)
-        if(validate){
-            next()
+const auth = (req, res, next) => {
+    const BearerToken = req.headers["authorization"];
+    if (BearerToken) {
+        const token = BearerToken.split(" ")[1];
+        const validate = jwt.verify(token, secret_key);
+        if (validate) {
+            next();
+        } else {
+            console.log("User not Authorized!");
+            res.send({ msg: "User not authorized" });
         }
-
-        return res.send({msg : "user not authorised"})
-
-
+    } else {
+        console.log("User not Authorized");
+        res.send({ msg: "User not authorized" });
     }
-
-    return res.send({msg: "user not allowed"})
-
 }
 
-module.exports = auth
+module.exports = auth;

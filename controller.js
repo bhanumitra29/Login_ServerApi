@@ -1,6 +1,7 @@
 const array = []; 
 
 const bcrypt = require('bcrypt');
+
 const jwt = require('jsonwebtoken'); 
 const secret_key = 'bhanu';
 
@@ -15,15 +16,18 @@ const register = (req, res) => {
 
     if (details) {
         return res.send({ msg: 'User already registered' });
-    }
+    } 
+    else{
 
-    const saltround = bcrypt.genSaltSync(10)
+     const saltround = bcrypt.genSaltSync(10)
 
     const hashpassword = bcrypt.hashSync(data.password, saltround); 
-   
     const tempobject = {
         email: data.email,
         password: hashpassword,
+        name: data.name,
+        phone: data.phone,
+        
     };
 
     array.push(tempobject); 
@@ -31,9 +35,11 @@ const register = (req, res) => {
     array.push(data)
 
     const token = jwt.sign({ useremail: data.email }, secret_key,{expiresIn:"7d"}); 
-    console.log(token);
+    console.log("token:", token);
 
-    res.send({ msg: 'user Registered sucessfully', token: token });
+    res.send({ msg: 'User Registered sucessfully', token: token });
+}
+ 
 };
 
 
@@ -62,9 +68,9 @@ const login = (req, res) => {
     }
 };
 
-const home =(req,res) =>{
-    return res.send("this is home");
+// const home =(req,res) =>{
+//     return res.send("this is home");
 
-}
-module.exports = { register, login,home };
+// }
+module.exports = { register, login, secret_key };
 
